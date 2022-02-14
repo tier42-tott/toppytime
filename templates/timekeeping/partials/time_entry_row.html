@@ -1,0 +1,7 @@
+<tr>
+    <td>{{ time_entry.start_time.date|date:'m/d/Y' }}</td>
+    <td>{{ time_entry.start_time.time|date:'H:i' }}</td>
+    <td>{{ time_entry.end_time.date|date:'m/d/Y' }}</td>
+    <td>{{ time_entry.end_time.time|date:'H:i' }}</td>
+    <td class="text-end">{{ time_entry.hours|floatformat:2 }}</td>
+</tr>

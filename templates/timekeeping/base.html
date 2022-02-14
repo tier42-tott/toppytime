@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Tier42's Timekeeping Solution">
+
+        <title>ToppyTime</title>
+        <link href="{% static '/vendor/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static '/vendor/material-icons/iconfont/material-icons.css' %}" rel="stylesheet">
+        <link href="{% static '/vendor/tom-select/dist/css/tom-select.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static '/vendor/vanillajs-datepicker/dist/css/datepicker.min.css' %}">
+        {% block styles %}{% endblock %}
+    </head>
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+
+        <script src="{% static '/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static '/vendor/htmx.org/dist/htmx.min.js' %}"></script>
+        <script src="{% static '/vendor/tom-select/dist/js/tom-select.complete.min.js' %}"></script>
+        <script src="{% static '/vendor/vanillajs-datepicker/dist/js/datepicker-full.min.js' %}"></script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

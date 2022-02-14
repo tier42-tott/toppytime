@@ -1,0 +1,30 @@
+{# Gives a form with start and end times for TimeEntry Models #}
+{# expects a context variable named "id" that is an string that correlates to the ID #}
+{# of the table that newly created entries should be added to, as well as the "form" #}
+{# variable representing the TimeEntryForm given. #}
+{% load django_bootstrap5 %}
+
+<form hx-post="{% url 'timekeeping:time-input' %}" hx-target="#{{ id }}" hx-swap="beforeend">
+    <div class="row no-gutters">
+        {% bootstrap_field form.start_time wrapper_class='form-group col-md-6' %}
+        {% bootstrap_field form.end_time wrapper_class='form-group col-md-6' %}
+    </div>
+    <br>
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <br>
+    {% endif %}
+
+    <button type="submit" value="Save" class="btn btn-outline-primary lh-1">
+        <span class="material-icons">check</span>
+    </button>
+    <button type="button" value="Cancel" class="btn btn-outline-danger lh-1" onClick="this.form.reset()">
+        <span class="material-icons">delete</span>
+    </button>
+</form>
