@@ -17,7 +17,7 @@ class TimeTableView(TemplateView):
         # https://stackoverflow.com/questions/18200530/get-the-last-sunday-and-saturdays-date-in-python
         today = datetime.date.today()
         idx = (today.weekday() + 1) % 7
-        sun = today - datetime.timedelta(7 + idx)
+        sun = today - datetime.timedelta(idx)
         # https://stackoverflow.com/questions/4668619/how-do-i-filter-query-objects-by-date-range-in-django
         context['time_entries'] = TimeEntry.objects.filter(end_time__gte=sun)
         form = TimeEntryForm()
@@ -53,13 +53,14 @@ class TimeInputPartialView(View):
         if form.is_valid():
             time_entry = form.save()
             context = {
-                'time_entry': time_entry
+                'time_entry': time_entry,
+                'form': TimeEntryForm()
             }
-            return render(request, 'timekeeping/partials/time_entry_row.html', context)
+            return render(request, 'timekeeping/partials/time_entry_form_post_with_oob.html', context)
         # if form had errors, resend the form partial to have the user fix them
         context = {
             'form': form
         }
         print("Invalid Form")
         print(form.errors)
-        return render(request, 'timekeeping/partials/create_time_entry.html', context)
+        return render(request, 'timekeeping/partials/time_entry_form_post_with_oob.html', context)

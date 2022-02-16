@@ -1,0 +1,5 @@
+
+{% include 'timekeeping/partials/create_time_entry.html' with form=form id='table1' %}
+{% if time_entry %}
+    {% include 'timekeeping/partials/time_entry_row.html' with time_entry=time_entry oob_swap_value='beforeend:#table1' %}
+{% endif %}

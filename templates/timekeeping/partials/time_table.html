@@ -10,7 +10,7 @@
     </thead>
     <tbody id="{{ id }}">
         {% for time_entry in time_entries %}
-            {% include 'timekeeping/partials/time_entry_row.html' with time_entry=time_entry %}
+            {% include 'timekeeping/partials/time_entry_row.html' with time_entry=time_entry oob_swap_value='none' %}
         {% endfor %}
     </tbody>
     <tfoot>

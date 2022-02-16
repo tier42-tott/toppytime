@@ -4,22 +4,13 @@
 {# variable representing the TimeEntryForm given. #}
 {% load django_bootstrap5 %}
 
-<form hx-post="{% url 'timekeeping:time-input' %}" hx-target="#{{ id }}" hx-swap="beforeend">
+<form hx-post="{% url 'timekeeping:time-input' %}" hx-swap="outerHTML">
     <div class="row no-gutters">
         {% bootstrap_field form.start_time wrapper_class='form-group col-md-6' %}
         {% bootstrap_field form.end_time wrapper_class='form-group col-md-6' %}
     </div>
+    {% bootstrap_form_errors form %}
     <br>
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endfor %}
-        <br>
-    {% endif %}
 
     <button type="submit" value="Save" class="btn btn-outline-primary lh-1">
         <span class="material-icons">check</span>
