@@ -8,9 +8,9 @@
             <th class="text-end hours-col">Hours</th>
         </tr>
     </thead>
-    <tbody id="{{ id }}">
+    <tbody>
         {% for time_entry in time_entries %}
-            {% include 'timekeeping/partials/time_entry_row.html' with time_entry=time_entry oob_swap_value='none' %}
+            {% include 'timekeeping/partials/time_entry_row.html' with time_entry=time_entry %}
         {% endfor %}
     </tbody>
     <tfoot>
@@ -19,18 +19,7 @@
             <th/>
             <th/>
             <th/>
-            <th id="{{ id }}-total-hours" class="text-end"></th>
+            <th class="text-end">Total Hours: {{ total_hours }}</th>
         </tr>
     </tfoot>
 </table>
-
-<!-- https://stackoverflow.com/questions/58923201/how-do-i-sum-the-price-column-from-html-table-using-javascript/58923290 -->
-<script type="text/javascript">
-    document.addEventListener('htmx:load', function (evt) {
-        let table = document.getElementById("{{ id }}");
-        let total = Array.from(table.rows).reduce((t, row) => {
-            return t + parseFloat(row.cells[4].innerHTML);
-        }, 0);
-        document.getElementById("{{ id }}-total-hours").innerHTML = "Total: " + total.toFixed(2);
-    });
-</script>

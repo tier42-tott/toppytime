@@ -4,7 +4,7 @@
 {# variable representing the TimeEntryForm given. #}
 {% load django_bootstrap5 %}
 
-<form hx-post="{% url 'timekeeping:time-input' %}" hx-swap="outerHTML">
+<form hx-post="{% url 'timekeeping:time-input' %}" hx-target="#table-and-form">
     <div class="row no-gutters">
         {% bootstrap_field form.start_time wrapper_class='form-group col-md-6' %}
         {% bootstrap_field form.end_time wrapper_class='form-group col-md-6' %}

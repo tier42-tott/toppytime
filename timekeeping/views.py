@@ -1,5 +1,4 @@
 import datetime
-import logging
 
 from django.shortcuts import render
 from django.views import View
@@ -9,17 +8,21 @@ from .models import TimeEntry
 from .forms import TimeEntryForm
 
 
+def get_sunday(date):
+    # https://stackoverflow.com/questions/18200530/get-the-last-sunday-and-saturdays-date-in-python
+    idx = (date.weekday() + 1) % 7
+    sun = date - datetime.timedelta(idx)
+    return sun
+
+
 class TimeTableView(TemplateView):
     template_name = 'timekeeping/dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # https://stackoverflow.com/questions/18200530/get-the-last-sunday-and-saturdays-date-in-python
-        today = datetime.date.today()
-        idx = (today.weekday() + 1) % 7
-        sun = today - datetime.timedelta(idx)
         # https://stackoverflow.com/questions/4668619/how-do-i-filter-query-objects-by-date-range-in-django
-        context['time_entries'] = TimeEntry.objects.filter(end_time__gte=sun)
+        context['time_entries'] = TimeEntry.objects.filter(end_time__gte=get_sunday(datetime.date.today()))
+        context['total_hours'] = sum(t.hours() for t in context['time_entries'])
         form = TimeEntryForm()
         context['form'] = form
         return context
@@ -51,16 +54,15 @@ class TimeInputPartialView(View):
     def post(self, request):
         form = self.get_form()
         if form.is_valid():
-            time_entry = form.save()
-            context = {
-                'time_entry': time_entry,
-                'form': TimeEntryForm()
-            }
-            return render(request, 'timekeeping/partials/time_entry_form_post_with_oob.html', context)
-        # if form had errors, resend the form partial to have the user fix them
+            print('Form is valid!')
+            form.save()
+            form = TimeEntryForm()
+        today = datetime.date.today()
+        idx = (today.weekday() + 1) % 7
+        sun = today - datetime.timedelta(idx)
         context = {
+            'time_entries': TimeEntry.objects.filter(end_time__gte=get_sunday(datetime.date.today())),
             'form': form
         }
-        print("Invalid Form")
-        print(form.errors)
-        return render(request, 'timekeeping/partials/time_entry_form_post_with_oob.html', context)
+        context['total_hours'] = sum(t.hours() for t in context['time_entries'])
+        return render(request, 'timekeeping/partials/time_entry_form_post.html', context)

@@ -1,0 +1,8 @@
+<div id="table-and-form">
+    <div class="card p-4 mt-2 mb-2" >
+        {% include 'timekeeping/partials/create_time_entry.html' with form=form %}
+    </div>
+
+    <h2>This Week's Time Entries</h2>
+    {% include 'timekeeping/partials/time_table.html' with time_entries=time_entries %}
+</div>
